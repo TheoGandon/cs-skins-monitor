@@ -16,15 +16,11 @@ export default function App() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {filtered.map((skin) => (
-          <div key={skin.market_hash_name} className="p-4 bg-white dark:bg-gray-800 rounded shadow flex flex-col items-center">
-            <img
-            src={skin.image_512px || skin.image_300px}
-            alt={skin.market_hash_name}
-            crossOrigin="anonymous"
-            className="w-20 h-20 object-contain mb-2"
-/>
-
+        {filtered.map((skin, index) => (
+          <div 
+            key={`${skin.market_hash_name}-${index}`} 
+            className="p-4 bg-white dark:bg-gray-800 rounded shadow flex flex-col items-center"
+          >         
             <h2 className="text-lg font-semibold text-center">{skin.market_hash_name}</h2>
             <p className="text-blue-500 font-bold mt-2">
               {skin.min_price ? `${skin.min_price} €` : "N/A"}

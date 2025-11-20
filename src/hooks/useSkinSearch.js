@@ -5,7 +5,7 @@ export function useSkinSearch() {
   const [allSkins, setAllSkins] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [query, setQuery] = useState("");
-  
+
   useEffect(() => {
     fetchSkins()
       .then((data) => {
@@ -17,7 +17,7 @@ export function useSkinSearch() {
 
   useEffect(() => {
     if (!query.trim()) {
-      setFiltered(allSkins.slice(0, 40));
+      setFiltered(allSkins.slice(0, 5));
       return;
     }
 

@@ -4,7 +4,6 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
-// Import compatible pour node-fetch en CommonJS/ESM
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
@@ -15,7 +14,7 @@ app.get("/api/skins", async (req, res) => {
   try {
     const now = Date.now();
 
-    if (cache && now - lastFetch < 60000) {
+    if (cache && now - lastFetch < 10000) {
       return res.json(cache);
     }
 
