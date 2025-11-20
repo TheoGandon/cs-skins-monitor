@@ -1,17 +1,37 @@
-import { useState } from 'react'
-import './App.css'
+import { useSkinSearch } from "./hooks/useSkinSearch";
 
-function App() {
+export default function App() {
+  const { query, setQuery, filtered } = useSkinSearch();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">
-      <div className="gradient-primary text-white text-center py-12 rounded-xl mb-8 shadow-xl">
-        <h1 className="text-5xl font-bold mb-4">CS Skins Monitor</h1>
-        <p className="text-xl opacity-90"></p>
+    <div className="min-h-screen p-8 bg-gray-100 dark:bg-gray-900 text-black dark:text-white">
+      <h1 className="text-3xl font-bold mb-4">Recherche de skins CS2</h1>
+
+      <input
+        type="text"
+        placeholder="Rechercher un skin..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 mb-6 dark:bg-gray-800"
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {filtered.map((skin) => (
+          <div key={skin.market_hash_name} className="p-4 bg-white dark:bg-gray-800 rounded shadow flex flex-col items-center">
+            <img
+            src={skin.image_512px || skin.image_300px}
+            alt={skin.market_hash_name}
+            crossOrigin="anonymous"
+            className="w-20 h-20 object-contain mb-2"
+/>
+
+            <h2 className="text-lg font-semibold text-center">{skin.market_hash_name}</h2>
+            <p className="text-blue-500 font-bold mt-2">
+              {skin.min_price ? `${skin.min_price} €` : "N/A"}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
-
-  )
+  );
 }
-
-export default App
