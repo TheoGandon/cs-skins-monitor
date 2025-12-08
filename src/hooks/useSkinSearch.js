@@ -5,14 +5,33 @@ export function useSkinSearch() {
   const [allSkins, setAllSkins] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    setError(null);
+
     fetchSkins()
       .then((data) => {
+        if (!mounted) return;
         setAllSkins(data);
-        setFiltered(data);
+        // Never expose more than 5 items in the UI to avoid excessive requests/429
+        setFiltered(Array.isArray(data) ? data.slice(0, 5) : []);
       })
-      .catch(console.error);
+      .catch((err) => {
+        console.error(err);
+        if (!mounted) return;
+        setError(err.message || "Erreur réseau");
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -29,5 +48,5 @@ export function useSkinSearch() {
     setFiltered(results.slice(0, 5));
   }, [query, allSkins]);
 
-  return { query, setQuery, filtered };
+  return { query, setQuery, filtered, loading, error, allSkins };
 }

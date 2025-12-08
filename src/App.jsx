@@ -1,33 +1,41 @@
 import { useSkinSearch } from "./hooks/useSkinSearch";
+import Header from "./components/Header";
+import SearchBar from "./components/SearchBar";
+import SkinList from "./components/SkinList";
+import EmptyState from "./components/EmptyState";
+import Loading from "./components/Loading";
+import Favorites from "./components/Favorites";
+import { useFavorites } from "./hooks/useFavorites";
+
 
 export default function App() {
-  const { query, setQuery, filtered } = useSkinSearch();
+  const { query, setQuery, filtered, loading, error, allSkins } = useSkinSearch();
+  const { items: favoriteNames } = useFavorites();
+
+  // Map favorite names to full skin objects (if available)
+  const favoriteSkins = (favoriteNames || [])
+    .map((name) => allSkins.find((s) => s.market_hash_name === name))
+    .filter(Boolean);
 
   return (
     <div className="min-h-screen p-8 bg-gray-100 dark:bg-gray-900 text-black dark:text-white">
-      <h1 className="text-3xl font-bold mb-4">Recherche de skins CS2</h1>
+      <Header />
 
-      <input
-        type="text"
-        placeholder="Rechercher un skin..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 mb-6 dark:bg-gray-800"
-      />
+      {favoriteSkins && favoriteSkins.length > 0 && (
+        <Favorites skins={favoriteSkins} />
+      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {filtered.map((skin, index) => (
-          <div 
-            key={`${skin.market_hash_name}-${index}`} 
-            className="p-4 bg-white dark:bg-gray-800 rounded shadow flex flex-col items-center"
-          >         
-            <h2 className="text-lg font-semibold text-center">{skin.market_hash_name}</h2>
-            <p className="text-blue-500 font-bold mt-2">
-              {skin.min_price ? `${skin.min_price} €` : "N/A"}
-            </p>
-          </div>
-        ))}
-      </div>
+      <SearchBar query={query} setQuery={setQuery} />
+
+      {loading ? (
+        <Loading />
+      ) : error ? (
+        <EmptyState message={`Erreur: ${error}`} />
+      ) : filtered && filtered.length > 0 ? (
+        <SkinList skins={filtered} />
+      ) : (
+        <EmptyState message="Aucun skin trouvé" />
+      )}
     </div>
   );
 }
