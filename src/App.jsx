@@ -8,6 +8,7 @@ import Favorites from "./components/Favorites";
 import { useFavorites } from "./hooks/useFavorites";
 
 
+
 export default function App() {
   const { query, setQuery, filtered, loading, error, allSkins } = useSkinSearch();
   const { items: favoriteNames } = useFavorites();
