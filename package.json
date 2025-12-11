@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@tailwindcss/postcss": "^4.1.17",
     "@tanstack/react-query": "^5.90.12",
     "pnpm": "^10.25.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^6.14.1"
+    "react-hook-form": "^7.48.0",
+    "react-router-dom": "^6.14.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
