@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function SearchBar({ query, setQuery, placeholder = "Rechercher un skin..." }) {
+export default function SearchBar({ query, setQuery, placeholder = "Rechercher un skin bordel..." }) {
   return (
     <div className="mb-6">
       <input
