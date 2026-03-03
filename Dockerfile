@@ -1,5 +1,9 @@
 FROM node:18 AS build
 
+# Allow build-time injection of Vite variables (they are baked into the static build)
+ARG VITE_SKINPORT_API
+ENV VITE_SKINPORT_API=${VITE_SKINPORT_API}
+
 # Répertoire de travail
 WORKDIR /app
 
