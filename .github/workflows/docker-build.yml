@@ -20,16 +20,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.PAT_GITHUB_PACKAGE_PUBLICATION }}
       - name: Build and push Docker image
-        env:
-          # Optionally set this secret in your repo to inject the production API endpoint at build-time
-          VITE_SKINPORT_API: ${{ secrets.VITE_SKINPORT_API }}
         run: |
           REPO=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
-          if [ -n "$VITE_SKINPORT_API" ]; then
-            docker build --build-arg VITE_SKINPORT_API="$VITE_SKINPORT_API" -t ghcr.io/$REPO:latest .
-          else
-            docker build -t ghcr.io/$REPO:latest .
-          fi
+          # Force build-arg so the production build includes the Skinport API endpoint
+          docker build --build-arg VITE_SKINPORT_API="https://api.skinport.com/v1/items" -t ghcr.io/$REPO:latest .
           docker tag ghcr.io/$REPO:latest ghcr.io/$REPO:$GITHUB_SHA
           docker push ghcr.io/$REPO:latest
           docker push ghcr.io/$REPO:$GITHUB_SHA
