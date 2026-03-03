@@ -49,7 +49,9 @@ export async function fetchSkins() {
   // if a request is already in flight, return the same promise
   if (inFlight) return inFlight;
 
-  const proxiedUrl = "/api/skinport?app_id=730&currency=EUR";
+  const appId = import.meta.env.VITE_APP_ID || '730';
+  const currency = import.meta.env.VITE_CURRENCY || 'EUR';
+  const proxiedUrl = `/api/skinport?app_id=${encodeURIComponent(appId)}&currency=${encodeURIComponent(currency)}`;
 
   inFlight = fetch(proxiedUrl).then(async (res) => {
     inFlight = null;

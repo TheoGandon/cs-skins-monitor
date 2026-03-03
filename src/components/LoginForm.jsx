@@ -5,9 +5,6 @@ import { z } from "zod";
 import { useAuth } from "../services/AuthProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 
-// WARNING: hardcoding credentials is insecure and only suitable for
-// local/testing. Do NOT commit real secrets. Prefer environment variables
-// or a real authentication backend in production.
 const HARDCODED_USER = "admin";
 const HARDCODED_PASS = "secret123";
 

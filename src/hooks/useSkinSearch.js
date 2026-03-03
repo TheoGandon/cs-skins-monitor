@@ -14,7 +14,7 @@ export function useSkinSearch() {
   // Filter logic remains the same
   let filtered = [];
   if (!query.trim()) {
-    filtered = Array.isArray(allSkins) ? allSkins.slice(0, 5) : [];
+    filtered = Array.isArray(allSkins) ? allSkins.slice(0, 10) : [];
   } else {
     const lower = query.toLowerCase();
     const results = allSkins.filter((skin) =>
