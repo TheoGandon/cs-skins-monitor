@@ -21,7 +21,8 @@ jobs:
           password: ${{ secrets.PAT_GITHUB_PACKAGE_PUBLICATION }}
       - name: Build and push Docker image
         run: |
-          docker build -t ghcr.io/$GITHUB_REPOSITORY:latest .
-          docker tag ghcr.io/$GITHUB_REPOSITORY:latest ghcr.io/$GITHUB_REPOSITORY:$GITHUB_SHA  
-          docker push ghcr.io/$GITHUB_REPOSITORY:latest
-          docker push ghcr.io/$GITHUB_REPOSITORY:$GITHUB_SHA
+          REPO=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
+          docker build -t ghcr.io/$REPO:latest .
+          docker tag ghcr.io/$REPO:latest ghcr.io/$REPO:$GITHUB_SHA
+          docker push ghcr.io/$REPO:latest
+          docker push ghcr.io/$REPO:$GITHUB_SHA
