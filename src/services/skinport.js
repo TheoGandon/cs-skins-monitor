@@ -51,7 +51,19 @@ export async function fetchSkins() {
 
   const appId = import.meta.env.VITE_APP_ID || '730';
   const currency = import.meta.env.VITE_CURRENCY || 'EUR';
-  const proxiedUrl = `/api/skinport?app_id=${encodeURIComponent(appId)}&currency=${encodeURIComponent(currency)}`;
+  // Client-side base: in development this should be the dev-proxy path (`/api/skinport`).
+  // In production set `VITE_SKINPORT_API` to the full API endpoint (e.g. "https://api.skinport.com/v1/items").
+  const clientBase = import.meta.env.VITE_SKINPORT_API || '/api/skinport';
+
+  let proxiedUrl;
+  if (/^https?:\/\//i.test(clientBase)) {
+    // Full absolute URL provided (production): append query string to that URL.
+    const sep = clientBase.includes('?') ? '&' : '?';
+    proxiedUrl = `${clientBase}${sep}app_id=${encodeURIComponent(appId)}&currency=${encodeURIComponent(currency)}`;
+  } else {
+    // Dev proxy path (relative): keep using the dev server proxy.
+    proxiedUrl = `${clientBase}?app_id=${encodeURIComponent(appId)}&currency=${encodeURIComponent(currency)}`;
+  }
 
   inFlight = fetch(proxiedUrl).then(async (res) => {
     inFlight = null;
