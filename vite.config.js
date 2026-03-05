@@ -7,7 +7,12 @@ export default defineConfig(({ mode }) => {
   const SKINPORT_REWRITE = env.VITE_SKINPORT_REWRITE || '/v1/items';
 
   return {
+
     plugins: [react()],
+    test: {
+      globals: true,
+      environment: 'jsdom',
+    },
     server: {
       proxy: {
         '/api/skinport': {
