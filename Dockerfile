@@ -1,4 +1,4 @@
-FROM node:18 AS build
+FROM node:22 AS build
 
 # Allow build-time injection of Vite variables (they are baked into the static build)
 ARG VITE_SKINPORT_API
